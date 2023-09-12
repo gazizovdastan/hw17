@@ -40,6 +40,15 @@ class ViewController: UIViewController {
         return button
     }()
     
+    private lazy var checkUIButton: UIButton = {
+       let button = UIButton()
+        button.configuration = .filled()
+        button.configuration?.title = "Check UI"
+        button.configuration?.titleAlignment = .center
+        button.addTarget(self, action: #selector(checkUIButtonPressed), for: .touchUpInside)
+        return button
+    }()
+    
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let activityIndicatorView = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
         activityIndicatorView.color = .black
@@ -62,6 +71,7 @@ class ViewController: UIViewController {
         view.addSubview(passwordTextField)
         view.addSubview(generateButton)
         view.addSubview(activityIndicator)
+        view.addSubview(checkUIButton)
     }
     
     private func setupConstraints() {
@@ -79,7 +89,12 @@ class ViewController: UIViewController {
         
         generateButton.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(view.snp.bottom).offset(-100)
+            make.top.equalTo(view.snp.bottom).offset(-130)
+        }
+        
+        checkUIButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(view.snp.bottom).offset(-80)
         }
         
         activityIndicator.snp.makeConstraints { make in
@@ -112,6 +127,14 @@ class ViewController: UIViewController {
         guard let inputText = passwordTextField.text else { return }
         DispatchQueue.global().async { [weak self] in
             self?.bruteForce(passwordToUnlock: inputText)
+        }
+    }
+    
+    @objc func checkUIButtonPressed() {
+        if view.backgroundColor == UIColor.yellow {
+            view.backgroundColor = UIColor.red
+        } else {
+            view.backgroundColor = UIColor.yellow
         }
     }
 }
